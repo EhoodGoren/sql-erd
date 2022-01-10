@@ -1,30 +1,18 @@
-require('dotenv').config();
 const express = require("express");
-const mysql = require("mysql2");
-
-// Should be kept as environment variable
-const { MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD, MYSQL_ROOT_PASSWORD } = process.env;
-const mysqlConfig = {
-  host: MYSQL_DATABASE,
-  user: MYSQL_USER,
-  password: MYSQL_PASSWORD,
-  database: MYSQL_ROOT_PASSWORD,
-};
+const con = require('./sql-connection');
+const getRouter = require('./routers/getRouter');
+const updateRouter = require('./routers/updateRouter');
+const removeRouter = require('./routers/removeRouter');
 
 const port = process.env.PORT || 3000;
-
-// Connecting to mysql container
-const con = mysql.createConnection(mysqlConfig);
-con.connect(function (err) {
-  if (err) throw err;
-  console.log("connected");
-});
 
 const app = express();
 
 app.get("/", function (req, res) {
   res.send("Testing my server");
 });
+
+app.use('/get', getRouter)
 
 //  Creating first table "numbers"
 app.get("/create-table", function (req, res) {
