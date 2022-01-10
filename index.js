@@ -1,6 +1,7 @@
 const express = require("express");
 const con = require('./sql-connection');
 const getRouter = require('./routers/getRouter');
+const postNewRouter = require('./routers/postNewRouter');
 const updateRouter = require('./routers/updateRouter');
 const removeRouter = require('./routers/removeRouter');
 
@@ -8,11 +9,16 @@ const port = process.env.PORT || 3000;
 
 const app = express();
 
+app.use(express.json())
+
 app.get("/", function (req, res) {
   res.send("Testing my server");
 });
 
-app.use('/get', getRouter)
+app.use('/get', getRouter);
+app.use('/new', postNewRouter);
+app.use('/update', updateRouter);
+app.use('/remove', removeRouter);
 
 //  Creating first table "numbers"
 app.get("/create-table", function (req, res) {
